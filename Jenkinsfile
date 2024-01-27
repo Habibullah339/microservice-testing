@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/habibullah339/microservice-testing.git'
+                git branch: 'main', url: 'https://github.com/habibullah339/microservice-testing.git'
             }
         }
 
