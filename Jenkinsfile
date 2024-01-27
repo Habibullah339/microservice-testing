@@ -27,9 +27,11 @@ pipeline {
         stage('Push to DockerHub') {
             steps {
                 script {
+                    // Use withDockerRegistry to authenticate and push Docker image
                     withDockerRegistry([credentialsId: DOCKERHUB_CREDENTIAL_ID, url: 'https://index.docker.io/v1/']) {
-                        sh "sudo docker login -u _ -p ${DOCKERHUB_CREDENTIAL_ID} index.docker.io"
-                        sh "sudo docker push $DOCKER_IMAGE_NAME"
+                        // This step will automatically handle login and logout
+                        sh "sudo docker tag $DOCKER_IMAGE_NAME ${DOCKER_IMAGE_NAME}:latest"
+                        sh "sudo docker push ${DOCKER_IMAGE_NAME}:latest"
                     }
                 }
             }
