@@ -19,7 +19,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "sudo docker build -t $DOCKER_IMAGE_NAME ."
+                    sh "docker build -t $DOCKER_IMAGE_NAME ."
                 }
             }
         }
@@ -30,8 +30,8 @@ pipeline {
                     // Use withDockerRegistry to authenticate and push Docker image
                     withDockerRegistry([credentialsId: DOCKERHUB_CREDENTIAL_ID, url: 'https://index.docker.io/v1/']) {
                         // This step will automatically handle login and logout
-                        sh "sudo docker tag $DOCKER_IMAGE_NAME ${DOCKER_IMAGE_NAME}:latest"
-                        sh "sudo docker push ${DOCKER_IMAGE_NAME}:latest"
+                        sh "docker tag $DOCKER_IMAGE_NAME ${DOCKER_IMAGE_NAME}:latest"
+                        sh "docker push ${DOCKER_IMAGE_NAME}:latest"
                     }
                 }
             }
