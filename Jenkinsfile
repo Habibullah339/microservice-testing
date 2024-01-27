@@ -31,6 +31,10 @@ pipeline {
                     withDockerRegistry([credentialsId: DOCKERHUB_CREDENTIAL_ID, url: 'https://index.docker.io/v1/']) {
                         // This step will automatically handle login and logout
                         sh "docker tag $DOCKER_IMAGE_NAME ${DOCKER_IMAGE_NAME}:latest"
+                        
+                        // Use --password-stdin to securely pass the DockerHub password
+                        sh "echo \$(dockerhub_password) | docker login --username \$(dockerhub_username) --password-stdin"
+                        
                         sh "docker push ${DOCKER_IMAGE_NAME}:latest"
                     }
                 }
