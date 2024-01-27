@@ -5,6 +5,7 @@ pipeline {
         DOCKER_REGISTRY = 'habib339'
         DOCKER_IMAGE_NAME = 'habib339/sample-microservice'
         GITHUB_TOKEN_CREDENTIALS_ID = '3338'
+        DOCKERHUB_CREDENTIALS_ID = '3339'
     }
 
     triggers {
@@ -22,7 +23,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([string(credentialsId: "${env.GITHUB_TOKEN_CREDENTIALS_ID}", variable: 'GITHUB_TOKEN')]) {
-                        docker.withRegistry('https://registry.hub.docker.com', 'docker-credentials-id') {
+                        docker.withRegistry('https://registry.hub.docker.com', "${env.DOCKERHUB_CREDENTIALS_ID}") {
                             def customImage = docker.build("${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
                             customImage.push()
                         }
