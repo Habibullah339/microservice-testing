@@ -27,9 +27,9 @@ pipeline {
         stage('Push to DockerHub') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: DOCKERHUB_CREDENTIAL_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
-                        sh "docker push $DOCKER_IMAGE_NAME"
+                    withDockerRegistry([credentialsId: DOCKERHUB_CREDENTIAL_ID, url: 'https://index.docker.io/v1/']) {
+                        sh "sudo docker login -u _ -p ${DOCKERHUB_CREDENTIAL_ID} index.docker.io"
+                        sh "sudo docker push $DOCKER_IMAGE_NAME"
                     }
                 }
             }
