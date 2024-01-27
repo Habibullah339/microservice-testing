@@ -4,8 +4,8 @@ pipeline {
     environment {
         DOCKER_REGISTRY = 'habib339'
         DOCKER_IMAGE_NAME = 'habib339/sample-microservice'
-        GITHUB_TOKEN_CREDENTIALS_ID = '3338'
-        DOCKERHUB_CREDENTIALS_ID = '3339'
+        GITHUB_TOKEN_CREDENTIALS_ID = '33339'
+        DOCKERHUB_CREDENTIALS_ID = '3338'
     }
 
     triggers {
