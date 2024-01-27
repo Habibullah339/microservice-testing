@@ -32,11 +32,26 @@ pipeline {
                 script {
                     // Log in to DockerHub
                     withCredentials([usernamePassword(credentialsId: DOCKERHUB_CREDENTIAL_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+                       // sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+                       // Create a Docker configuration file for secure login
+                        def dockerConfig = """{
+                            "auths": {
+                                "https://index.docker.io/v1/": {
+                                    "auth": "${DOCKER_USERNAME}:${DOCKER_PASSWORD.encodeBase64()}"
+                                }
+                            }
+                        }"""
+                        
+                        sh "echo '$dockerConfig' > ~/.docker/config.json"
+                        sh "docker push $DOCKER_IMAGE_NAME"
+
+
+                        
+                        
                     }
 
                     // Push the Docker image to DockerHub
-                    sh "docker push $DOCKER_IMAGE_NAME"
+                   // sh "docker push $DOCKER_IMAGE_NAME"
                 }
             }
         }
