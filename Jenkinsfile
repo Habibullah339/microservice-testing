@@ -45,7 +45,8 @@ pipeline {
     post {
         always {
             script {
-                sh 'minikube stop'
+                //sh 'minikube stop'
+                echo "Habibi Yes Yes You did it"
                
             }
         }
