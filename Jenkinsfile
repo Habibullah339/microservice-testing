@@ -5,8 +5,6 @@ pipeline {
         GITHUB_CREDENTIAL_ID = '33339'
         DOCKERHUB_CREDENTIAL_ID = '3338'  // Update with the actual credential ID
         DOCKER_IMAGE_NAME = 'habib339/sample-image'
-        DOCKERHUB_CREDENTIALS_USR = credentials('your-dockerhub-credential-id').username
-        DOCKERHUB_CREDENTIALS_PSW = credentials('your-dockerhub-credential-id').password
     }
 
     stages {
@@ -28,8 +26,12 @@ pipeline {
 
         stage('Login to Docker Hub') {
             steps {
-                sh "echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
-                echo 'Login Completed'
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIAL_ID', usernameVariable: 'DOCKERHUB_CREDENTIALS_USR', passwordVariable: 'DOCKERHUB_CREDENTIALS_PSW')]) {
+                        sh "echo \${DOCKERHUB_CREDENTIALS_PSW} | sudo docker login -u \${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
+                        echo 'Login Completed'
+                    }
+                }
             }
         }
 
