@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         GITHUB_CREDENTIAL_ID = '33339'
-        DOCKERHUB_CREDENTIAL_ID = '3338'  // Update with the actual credential ID
+        DOCKERHUB_CREDENTIAL_ID = '5555'  // Update with the actual credential ID
         DOCKER_IMAGE_NAME = 'habib339/sample-image'
         DOCKERHUB_USERNAME = 'habib339'  // Update with your Docker Hub username
     }
