@@ -5,7 +5,8 @@ pipeline {
         GITHUB_CREDENTIAL_ID = '33339'
         DOCKERHUB_CREDENTIAL_ID = '3338'  // Update with the actual credential ID
         DOCKER_IMAGE_NAME = 'habib339/sample-image'
-        DOCKERHUB_USERNAME = 'habib339'  // Update with your Docker Hub username
+        DOCKERHUB_CREDENTIALS_USR = credentials('your-dockerhub-credential-id').username
+        DOCKERHUB_CREDENTIALS_PSW = credentials('your-dockerhub-credential-id').password
     }
 
     stages {
@@ -25,21 +26,18 @@ pipeline {
             }
         }
 
+        stage('Login to Docker Hub') {
+            steps {
+                sh "echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
+                echo 'Login Completed'
+            }
+        }
+
         stage('Push to DockerHub') {
             steps {
                 script {
-                    // Use withCredentials to securely pass Docker Hub credentials
-                    withCredentials([
-                        usernamePassword(
-                            credentialsId: 'DOCKERHUB_CREDENTIAL_ID',
-                            usernameVariable: 'DOCKERHUB_USERNAME',
-                            passwordVariable: 'DOCKERHUB_PASSWORD'
-                        )
-                    ]) {
-                        sh "docker login --username \${DOCKERHUB_USERNAME} --password \${DOCKERHUB_PASSWORD}"
-                        sh "docker tag $DOCKER_IMAGE_NAME ${DOCKER_IMAGE_NAME}:latest"
-                        sh "docker push ${DOCKER_IMAGE_NAME}:latest"
-                    }
+                    sh "docker tag $DOCKER_IMAGE_NAME ${DOCKER_IMAGE_NAME}:latest"
+                    sh "docker push ${DOCKER_IMAGE_NAME}:latest"
                 }
             }
         }
