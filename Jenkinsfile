@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         GITHUB_CREDENTIAL_ID = '33339'
-        DOCKERHUB_CREDENTIAL_ID = '4444'
+        DOCKERHUB_CREDENTIAL_ID = '3338'
         DOCKER_IMAGE_NAME = 'habib339/sample-image'
     }
 
