@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         GITHUB_CREDENTIAL_ID = '33339'
-        DOCKER_IMAGE_NAME = 'habib339/sample-image'  // Update with your desired repository name
+        DOCKER_IMAGE_NAME = 'habib339/sample-image'
         KUBERNETES_MANIFESTS_PATH = ''
     }
 
@@ -27,6 +27,9 @@ pipeline {
         stage('Deploy to Minikube') {
             steps {
                 script {
+                    // Set KUBERNETES_MANIFESTS_PATH to the current working directory
+                    KUBERNETES_MANIFESTS_PATH = pwd()
+
                     sh 'minikube start'
                     sh 'kubectl config use-context minikube'
                     sh "kubectl apply -f $KUBERNETES_MANIFESTS_PATH"
