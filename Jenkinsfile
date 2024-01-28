@@ -3,8 +3,9 @@ pipeline {
     
     environment {
         GITHUB_CREDENTIAL_ID = '33339'
-        DOCKERHUB_CREDENTIAL_ID = '3338'
+        DOCKERHUB_CREDENTIAL_ID = '4444'  // Update with the actual credential ID
         DOCKER_IMAGE_NAME = 'habib339/sample-image'
+        DOCKERHUB_USERNAME = 'habib339'  // Update with your Docker Hub username
     }
 
     stages {
@@ -32,8 +33,8 @@ pipeline {
                         // This step will automatically handle login and logout
                         sh "docker tag $DOCKER_IMAGE_NAME ${DOCKER_IMAGE_NAME}:latest"
                         
-                        // Use --password-stdin to securely pass the DockerHub password
-                        sh "echo \$(dockerhub_password) | docker login --username \$(dockerhub_username) --password-stdin"
+                        // Use --password-stdin to securely pass the DockerHub access token
+                        sh "echo \$(dockerhub_accesstoken) | docker login --username $DOCKERHUB_USERNAME --password-stdin"
                         
                         sh "docker push ${DOCKER_IMAGE_NAME}:latest"
                     }
