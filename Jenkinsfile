@@ -45,7 +45,7 @@ pipeline {
     post {
         always {
             script {
-                sh 'minikube stop'
+               // sh 'minikube stop'
             }
         }
     }
