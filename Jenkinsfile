@@ -4,7 +4,8 @@ pipeline {
     environment {
         GITHUB_CREDENTIAL_ID = '33339'
         DOCKERHUB_CREDENTIAL_ID = '3338'  // Update with the actual credential ID
-        DOCKER_IMAGE_NAME = 'sample-image'  // Update with your desired repository name
+        DOCKER_IMAGE_NAME = 'habib339/sample-repo'  // Update with your desired repository name
+        DOCKER_TAG = 'latest'  // Update with your desired tag
     }
 
     stages {
@@ -38,8 +39,8 @@ pipeline {
         stage('Push to DockerHub') {
             steps {
                 script {
-                    sh "docker tag $DOCKER_IMAGE_NAME ${DOCKER_IMAGE_NAME}:latest"
-                    sh "docker push ${DOCKER_IMAGE_NAME}:latest"
+                    sh "docker tag $DOCKER_IMAGE_NAME ${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
+                    sh "docker push ${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
                 }
             }
         }
