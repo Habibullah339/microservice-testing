@@ -34,7 +34,9 @@ pipeline {
                     sh 'kubectl config use-context minikube'
 
                     // Apply only Kubernetes manifest files with .yaml extension
-                    sh "kubectl apply -f ${KUBERNETES_MANIFESTS_PATH}/*.yaml"
+                    //sh "kubectl apply -f ${KUBERNETES_MANIFESTS_PATH}/*.yaml"
+                    sh "kubectl apply -f ${KUBERNETES_MANIFESTS_PATH}/deployment.yaml"
+                    sh "kubectl apply -f ${KUBERNETES_MANIFESTS_PATH}/service.yaml"
                 }
             }
         }
