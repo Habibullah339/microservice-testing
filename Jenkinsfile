@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         GITHUB_CREDENTIAL_ID = '33339'
-        DOCKERHUB_CREDENTIAL_ID = '5555'  // Update with the actual credential ID
+        DOCKERHUB_CREDENTIAL_ID = '3338'  // Update with the actual credential ID
         DOCKER_IMAGE_NAME = 'habib339/sample-image'
         DOCKERHUB_USERNAME = 'habib339'  // Update with your Docker Hub username
     }
@@ -28,14 +28,16 @@ pipeline {
         stage('Push to DockerHub') {
             steps {
                 script {
-                    // Use withDockerRegistry to authenticate and push Docker image
-                    withDockerRegistry([credentialsId: DOCKERHUB_CREDENTIAL_ID, url: 'https://index.docker.io/v1/']) {
-                        // This step will automatically handle login and logout
+                    // Use withCredentials to securely pass Docker Hub credentials
+                    withCredentials([
+                        usernamePassword(
+                            credentialsId: 'DOCKERHUB_CREDENTIAL_ID',
+                            usernameVariable: 'DOCKERHUB_USERNAME',
+                            passwordVariable: 'DOCKERHUB_PASSWORD'
+                        )
+                    ]) {
+                        sh "docker login --username \${DOCKERHUB_USERNAME} --password \${DOCKERHUB_PASSWORD}"
                         sh "docker tag $DOCKER_IMAGE_NAME ${DOCKER_IMAGE_NAME}:latest"
-                        
-                        // Use --password-stdin to securely pass the DockerHub access token
-                        sh "echo \$(dockerhub_accesstoken) | docker login --username $DOCKERHUB_USERNAME --password-stdin"
-                        
                         sh "docker push ${DOCKER_IMAGE_NAME}:latest"
                     }
                 }
